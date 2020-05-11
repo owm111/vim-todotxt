@@ -6,34 +6,32 @@ endfunction
 
 " Marking tasks as done
 
-function todotxt#undo()
-  s/^\(x \(\d\d\d\d-\d\d-\d\d \(\d\d\d\d-\d\d-\d\d \)\@=\)\?\)\?/
+function todotxt#undo(line)
+  return substitute(a:line, '^\(x \(\d\d\d\d-\d\d-\d\d \(\d\d\d\d-\d\d-\d\d \)\@=\)\?\)\?', '', '')
 endfunction
 
-function todotxt#do()
-  execute 's/^\(\(([A-Z])\) \)\?/x ' . s:get_current_date() . ' /'
+function todotxt#do(line)
+  return substitute(a:line, '^\(\(([A-Z)\) \)\?', 'x ' . s:get_current_date() . ' ', '')
 endfunction
 
-function todotxt#toggleDo()
-  if getline('.') =~ '^x'
-    call todotxt#undo()
+function todotxt#toggleDo(line)
+  if a:line[0] == 'x'
+    return todotxt#undo(a:line)
   else
-    call todotxt#do()
+    return todotxt#do(a:line)
   endif
 endfunction
 
 " Setting task priorities
 
-function todotxt#unpri()
-  s/^\(([A-Z]) \)\?/
+function todotxt#unpri(line)
+  return substitute(a:line, '^\(([A-Z]) \)\?', '', '')
 endfunction
 
-function todotxt#pri(p)
+function todotxt#pri(p, line)
   let l:pUpper = toupper(a:p)
   if l:pUpper =~ '^[A-Z]$'
-    call todotxt#unpri()
-    call todotxt#undo()
-    execute 's/^/(' . l:pUpper . ') /'
+    return todotxt#unpri(a:line)->todotxt#undo()->{ x -> substitute(x, '^', '(' . l:pUpper . ') ') }
   else
     " TODO: is there an actual way to make it not accept non-letter arguments?
     echohl ErrorMsg
@@ -42,23 +40,6 @@ function todotxt#pri(p)
   endif
 endfunction
 
-function todotxt#inputPri(p = v:null)
-  call todotxt#pri(a:p == v:null ? input("Enter priority: ") : a:p)
-endfunction
-
-function todotxt#maybePri(p)
-  if a:p == ''
-    call todotxt#unpri()
-  else
-    call todotxt#pri(a:p)
-  endif
-endfunction
-
-function todotxt#inputMaybePri(p = v:null)
-  let l:setP = a:p == v:null ? input("Enter priority or blank to remove: ") : a:p
-  if l:setP == ''
-    call todotxt#unpri()
-  else
-    call todotxt#pri(l:setP)
-  endif
+function todotxt#maybePri(p, line)
+  return a:p == '' ? a:line->todotxt#unpri() : a:line->todotxt#pri(a:p)
 endfunction
