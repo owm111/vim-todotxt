@@ -2,7 +2,11 @@
 
 Simple Vim plugin for todo.txt.
 
-Includes filetype detection, syntax defintions, and some basic functions for working with todo.txt files.
+Includes filetype detection, syntax defintions, and some basic functions and commands for working with todo.txt files.
+
+## Requirements
+
+Requires at least Vim version 8.
 
 ## Installation
 
