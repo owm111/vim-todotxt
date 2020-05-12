@@ -1,0 +1,89 @@
+#! /usr/bin/env nix-shell
+#! nix-shell -A docsShell -i sh 
+#  vim:ft=sh:
+
+allZeros="$(printf '%078d')"
+
+fmtHead() {
+  text="$1"
+  shift
+  tag="${1:-$text}"
+  shift
+  tagText="$(printf '%s' "*${tag}*" | tr ABCDEFGHIJKLMNOPQRSTUVWXYZ' ' abcdefghijklmnopqrstuvwxyz-)"
+  tagEnd="$tagText   " tag="$(printf "%0$(( 78 - ${#tagEnd} - ${#text} ))d" | tr 0 ' ')$tagEnd"
+  printf '%s' "$text" | tr abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ
+  printf '%s\n\n' "$tag"
+
+}
+
+fmtSec() {
+  printf '%s\n' "$allZeros" | tr 0 =
+  fmtHead "$@"
+}
+
+fmtSubSec() {
+  printf '%s\n' "$allZeros" | tr 0 -
+  fmtHead "$@"
+}
+
+printf '%s\t%s\t%s\n' '*vim-todotxt.txt*' 'For Vim version 8.2' 'Last change: 2020 May 11'
+
+cat <<EOF
+
+$(fmtHead "Contents" "vim-todotxt")
+
+    Introduction              |vim-todotxt-introduction|
+        Recommended setup     |vim-todotxt-recommended|
+    Syntax                    |vim-todotxt-syntax|
+    Commands                  |vim-todotxt-commands|
+    Functions                 |vim-todotxt-functions|
+
+$(fmtSec "Introduction" "vim-todotxt-introduction")
+
+vim-todotxt is a plugin that provides syntax defintions, filetype
+declarations, and some basic functions and commands for working with todo.txt
+files.
+
+Note that priorities are only defined as uppercase letters in parenthesis at
+the start of a line (i.e. \`^[[A-Z]]\`).
+
+$(fmtSubSec "Recommended setup" vim-todotxt-recommended)
+
+By default, no keys are mapped. To map the most "important" commands, add
+this somewhere in your Vim config: >
+    nnoremap <buffer> <localleader>x :TodotxtToggleDo<CR>
+    vnoremap <buffer> <localleader>x :TodotxtToggleDo<CR>
+    nnoremap <buffer> <localleader>p :TodotxtInputMaybePri<CR>
+    vnoremap <buffer> <localleader>p :TodotxtInputMaybePri<CR>
+<
+
+This setup will have <localleader>x toggle the current line as done and
+<localleader>p will set the priority of the current line.
+
+Note that you will want to only map these keys for the todotxt filetype. This
+can be achieved with the |ftplugin| folder or |autocommands|.
+
+$(fmtSec "Syntax" "vim-todotxt-syntax")
+
+The following highlight groups are defined for todo.txt files (filetype
+"todotxt"):
+
+$(vim-doc-gen syntax < syntax/todotxt.vim)
+
+                                                            *hl-todotxtPri*
+todotxtPri{letter}            Tasks of priority {letter}.
+
+$(fmtSec "Commands" "vim-todotxt-commands")
+
+The following commands are defined for todo.txt files:
+
+Note that all commands act on the current line or a range (if provided).
+
+$(vim-doc-gen commands < ftplugin/todotxt.vim)
+
+$(fmtSec "Functions" "vim-todotxt-functions")
+
+The following functions are defined for todo.txt files:
+
+$(vim-doc-gen functions < autoload/todotxt.vim)
+EOF
