@@ -15,3 +15,11 @@ Standard plugin installation. Use packages, a plugin manager, or manually extrac
 ## Documentation
 
 See `:help vim-todotxt` for information about functions, key mappings, and higlight groups.
+
+## Building
+
+Building requires Nix.
+
+The documentation can be edited in `doc-gen/run`. To build the documentation,
+
+    doc-gen/run > docs/vim-todotxt.txt
