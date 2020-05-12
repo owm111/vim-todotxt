@@ -20,16 +20,16 @@ command -buffer -range TodotxtToggleDo
 command -buffer -range          TodotxtUnpri
       \ call s:applyToRange(<line1>, <line2>, { x -> todotxt#unpri(x)              })
 command -buffer -range -nargs=1 TodotxtPri
-      \ call s:applyToRange(<line1>, <line2>, { x -> todotxt#pri(<q-args>, x)      })
+      \ call s:applyToRange(<line1>, <line2>, { x -> todotxt#pri(x, <q-args>)      })
 command -buffer -range -nargs=1 TodotxtMaybePri
-      \ call s:applyToRange(<line1>, <line2>, { x -> todotxt#maybePri(<q-args>, x) })
+      \ call s:applyToRange(<line1>, <line2>, { x -> todotxt#maybePri(x, <q-args>) })
 
 " Variadically setting task priorities
 
 command -buffer -range -nargs=? TodotxtInputPri
       \ call s:applyToRange(<line1>, <line2>, { x ->
-      \ todotxt#pri(x, <q-args> == '' ? input('Enter priority: ') : <q-args>) })
+      \ todotxt#pri(<q-args> == '' ? input('Enter priority: ') : <q-args>, x) })
 
 command -buffer -range -nargs=? TodotxtInputMaybePri
       \ call s:applyToRange(<line1>, <line2>, { x ->
-      \ todotxt#pri(x, <q-args> == '' ? input('Enter priority or blank to remove: ') : <q-args>) })
+      \ todotxt#pri(<q-args> == '' ? input('Enter priority or blank to remove: ') : <q-args>, x) })
