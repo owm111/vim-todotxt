@@ -1,4 +1,4 @@
-*vim-todotxt.txt*	For Vim version 8.2	Last change: 2020 May 11
+*vim-todotxt.txt*	For Vim version 8.2	Last change: 2020 May 12
 
 CONTENTS                                                      *vim-todotxt*   
 
@@ -49,7 +49,6 @@ todotxtContext                Contexts (e.g. `@context`).
 todotxtDueDate                Due dates (e.g. `due:2020-05-07`).
                                                         *hl-todotxtProject*
 todotxtProject                Projects (e.g. `+project`).
-
                                                             *hl-todotxtPri*
 todotxtPri{letter}            Tasks of priority {letter}.
 
@@ -112,3 +111,5 @@ todotxt#maybePri( {p}, {line} )
 todotxt#toggleDo( {line} )    If a {line} begins with an 'x ', then
                               |todotxt#undo| is called, else |todotxt#do| is
                               called.
+
+vim:ft=help:tw=78:norl:ts=8:

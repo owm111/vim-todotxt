@@ -26,7 +26,7 @@ fmtSubSec() {
   fmtHead "$@"
 }
 
-printf '%s\t%s\t%s\n' '*vim-todotxt.txt*' 'For Vim version 8.2' 'Last change: 2020 May 11'
+printf '%s\t%s\t%s\n' '*vim-todotxt.txt*' 'For Vim version 8.2' 'Last change: 2020 May 12'
 
 cat <<EOF
 
@@ -69,7 +69,6 @@ The following highlight groups are defined for todo.txt files (filetype
 "todotxt"):
 
 $(vim-doc-gen syntax < syntax/todotxt.vim)
-
                                                             *hl-todotxtPri*
 todotxtPri{letter}            Tasks of priority {letter}.
 
@@ -86,4 +85,6 @@ $(fmtSec "Functions" "vim-todotxt-functions")
 The following functions are defined for todo.txt files:
 
 $(vim-doc-gen functions < autoload/todotxt.vim)
+
+vim:ft=help:tw=78:norl:ts=8:
 EOF
