@@ -1,89 +1,114 @@
-*vim-todotxt.txt*	For Vim version 8.2	Last change: 2020 May 7
+*vim-todotxt.txt*	For Vim version 8.2	Last change: 2020 May 11
 
-CONTENTS                                                      *vim-todotxt*
+CONTENTS                                                      *vim-todotxt*   
 
-    Introduction		|vim-todotxt-introduction|
-        Recommended setup	|vim-todotxt-recommended|
-    Syntax			|vim-todotxt-syntax|
-    Functions			|vim-todotxt-functions|
+    Introduction              |vim-todotxt-introduction|
+        Recommended setup     |vim-todotxt-recommended|
+    Syntax                    |vim-todotxt-syntax|
+    Commands                  |vim-todotxt-commands|
+    Functions                 |vim-todotxt-functions|
 
-=============================================================================
-INTRODUCTION                                     *vim-todotxt-introduction*
+==============================================================================
+INTRODUCTION                                     *vim-todotxt-introduction*   
 
-vim-todotxt is a plugin that provides syntax definitions, filetype detection,
-and some basic functions for working with todo.txt files.
+vim-todotxt is a plugin that provides syntax defintions, filetype
+declarations, and some basic functions and commands for working with todo.txt
+files.
 
-Note priorities are only defined as uppercase letters in parenthesis at the
-start of a line (i.e. `^([A-Z])`).
+Note that priorities are only defined as uppercase letters in parenthesis at
+the start of a line (i.e. `^[[A-Z]]`).
 
 ------------------------------------------------------------------------------
-RECOMMENDED SETUP                                 *vim-todotxt-recommended*
+RECOMMENDED SETUP                                 *vim-todotxt-recommended*   
 
-By default, no keys are mapped. To map the most "important" functions, add
+By default, no keys are mapped. To map the most "important" commands, add
 this somewhere in your Vim config: >
-    nnoremap <buffer> <LocalLeader>x :call todotxt#toggleDo()<CR>
-    vnoremap <buffer> <LocalLeader>p :call todotxt#inputMaybePri()<CR>
-    nnoremap <buffer> <LocalLeader>x :call todotxt#toggleDo()<CR>
-    vnoremap <buffer> <LocalLeader>p :call todotxt#inputMaybePri()<CR>
+    nnoremap <buffer> <localleader>x :TodotxtToggleDo<CR>
+    vnoremap <buffer> <localleader>x :TodotxtToggleDo<CR>
+    nnoremap <buffer> <localleader>p :TodotxtInputMaybePri<CR>
+    vnoremap <buffer> <localleader>p :TodotxtInputMaybePri<CR>
 <
 
-This setup will have <localleader>x will toggle the current line as done and
+This setup will have <localleader>x toggle the current line as done and
 <localleader>p will set the priority of the current line.
 
-Note that you might only want to map these keys for only todo.txt files, so
-ftplugin/todotxt.vim or |:augroup|s might help.
+Note that you will want to only map these keys for the todotxt filetype. This
+can be achieved with the |ftplugin| folder or |autocommands|.
 
 ==============================================================================
-SYNTAX                                                 *vim-todotxt-syntax*
+SYNTAX                                                 *vim-todotxt-syntax*   
 
-The following highlight groups are defined for todo.txt files:
+The following highlight groups are defined for todo.txt files (filetype
+"todotxt"):
 
-                                                        *hl-todotxtContext*
-todotxtContext                Contexts (e.g. `+context`).
-                                                        *hl-todotxtProject*
-todotxtProject                Projects (e.g. `+project`).
-                                                        *hl-todotxtDueDate*
-todotxtDueDate                Due dates (e.g. `duedate:2020-05-07`).
                                                            *hl-todotxtDone*
 todotxtDone                   Completed tasks.
-                                                             *hl-todtxtPri*
-todtxtPri{letter}             Tasks of priority {letter}.
+                                                        *hl-todotxtContext*
+todotxtContext                Contexts (e.g. `@context`).
+                                                        *hl-todotxtDueDate*
+todotxtDueDate                Due dates (e.g. `due:2020-05-07`).
+                                                        *hl-todotxtProject*
+todotxtProject                Projects (e.g. `+project`).
+
+                                                            *hl-todotxtPri*
+todotxtPri{letter}            Tasks of priority {letter}.
 
 ==============================================================================
-FUNCTIONS                                           *vim-todotxt-functions*
+COMMANDS                                             *vim-todotxt-commands*   
 
-Note that all the functions act on current line or a range of lines if
-provided.
+The following commands are defined for todo.txt files:
 
-                                                             *todotxt#undo*
-todotxt#undo()                Removes an `x` from the beginning of the line
-                              and a date following (if the line starts with
-                              two dates).
+Note that all commands act on the current line or a range (if provided).
+
+                                                               *:TodotxtDo*
+TodotxtDo                     Runs |todotxt#do| on the current line (or
+                              range).
+                                                             *:TodotxtUndo*
+TodotxtUndo                   Runs |todotxt#undo| on the current line (or
+                              range).
+                                                            *:TodotxtUnpri*
+TodotxtUnpri                  Runs |todotxt#unpri| on the current line (or
+                              range).
+                                                         *:TodotxtInputPri*
+TodotxtInputPri [priority]    Runs |todotxt#pri| on the current line (or
+                              range). The priority can be specified as an
+                              argument or during execution via input.
+                                                         *:TodotxtToggleDo*
+TodotxtToggleDo               Runs |todotxt#toggleDo| on the current line (or
+                              range).
+                                                    *:TodotxtInputMaybePri*
+TodotxtInputMaybePri [priority]
+                              Runs |todotxt#maybePri| on the current line (or
+                              range). The priority can be specified as an
+                              argument or during execution via input.
+
+==============================================================================
+FUNCTIONS                                           *vim-todotxt-functions*   
+
+The following functions are defined for todo.txt files:
+
                                                                *todotxt#do*
-todotxt#do()                  Prepends the current line with an `x` and the
-                              date.
-                                                         *todotxt#toggleDo*
-todotxt#toggleDo()            If the line starts with an `x`, then
-                              |todotxt#undo| is called, otherwise,
-                              |todotxt#do| is called.
-                                                            *todotxt#unpri*
-todotxt#unpri()               Removes the priority of a task.
+todotxt#do( {line} )          Removes a priority from {line}, then prepends an
+                               x and the date (if a creation date is already
+                              specified).
                                                               *todotxt#pri*
-todotxt#pri( {pri} )          Sets the priority of a task to {pri}. {pri} must
-                              a letter (`[A-Za-z]`); lowercase letters will be
-                              converted to uppercase. Done tasks will be
-                              undone.
-                                                         *todotxt#inputPri*
-todotxt#inputPri( [pri] )     Like |todotxt#pri|, but will query the user for
-                              a priority if none is provided.
+todotxt#pri( {p}, {line} )    Calls |todotxt#unpri| and |todotxt#undo| on a
+                              {line}, then prepends a priority letter and a
+                              space. Will fail if not provided a letter for
+                              the priority argument.
+                                                             *todotxt#undo*
+todotxt#undo( {line} )        Removes an x from the beginning of {line}. If
+                              two dates are specified, then the first is
+                              removed.
+                                                            *todotxt#unpri*
+todotxt#unpri( {line} )       Removes a priority (`([A-Z]) \@=`) and leading
+                              spaces from {line}.
                                                          *todotxt#maybePri*
-todotxt#maybePri( {pri} )     Like |todotxt#pri|, but will remove the priority
-                              if a blank string (`''`) is specified.
-                                                    *todotxt#inputMaybePri*
-todotxt#inputMaybePri( [pri] )
-                              Like |todotxt#maybePri|, but will query the user
-                              for a priority if none is provided (similar to
-                              |todotxt#inputMaybePri|).
-
-
-vim:ft=help:tw=78:norl:ts=8:
+todotxt#maybePri( {p}, {line} )
+                              If provided an empty string as a {p}, then runs
+                              |todotxt#unpri|, else runs |todotxt#pri| with
+                              the {p}.
+                                                         *todotxt#toggleDo*
+todotxt#toggleDo( {line} )    If a {line} begins with an 'x ', then
+                              |todotxt#undo| is called, else |todotxt#do| is
+                              called.

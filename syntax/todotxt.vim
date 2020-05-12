@@ -2,9 +2,16 @@ if exists("b:current_syntax")
   finish
 endif
 
+" Contexts (e.g. `@context`).
 syntax match todotxtContext ' \@<=@\S\+'
+
+" Projects (e.g. `+project`).
 syntax match todotxtProject ' \@<=+\S\+'
+
+" Due dates (e.g. `due:2020-05-07`).
 syntax match todotxtDueDate 'due:\d\d\d\d-\d\d-\d\d\($\| \@=\)'
+
+" Completed tasks.
 syntax match todotxtDone '^x\s.\+$'
 
 let s:priorities = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "V", "W", "X", "Y", "Z"]

@@ -23,13 +23,15 @@ command -buffer -range TodotxtUnpri
       \ call s:applyToRange(<line1>, <line2>, { x -> todotxt#unpri(x)    })
 
 " Runs |todotxt#pri| on the current line (or range). The priority can be
-" specified as an argument or input.
+" specified as an argument or during execution via input.
+" Arguments: [priority]
 command -buffer -range -nargs=? TodotxtInputPri
       \ call s:applyToRange(<line1>, <line2>, { x ->
       \ todotxt#pri(<q-args> == '' ? input('Enter priority: ') : <q-args>, x) })
 
 " Runs |todotxt#maybePri| on the current line (or range). The priority can be
-" specified as an argument or input.
+" specified as an argument or during execution via input.
+" Arguments: [priority]
 command -buffer -range -nargs=? TodotxtInputMaybePri
       \ call s:applyToRange(<line1>, <line2>, { x ->
       \ todotxt#maybePri(<q-args> == '' ? input('Enter priority or blank to remove: ') : <q-args>, x) })
