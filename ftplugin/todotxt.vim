@@ -6,30 +6,30 @@ function s:applyToRange(line1, line2, f) " This function is impure!!
   endfor
 endfunction
 
-" Marking tasks as done
-
+" Runs |todotxt#undo| on the current line (or range).
 command -buffer -range TodotxtUndo
       \ call s:applyToRange(<line1>, <line2>, { x -> todotxt#undo(x)     })
+
+" Runs |todotxt#do| on the current line (or range).
 command -buffer -range TodotxtDo
       \ call s:applyToRange(<line1>, <line2>, { x -> todotxt#do(x)       })
+
+" Runs |todotxt#toggleDo| on the current line (or range).
 command -buffer -range TodotxtToggleDo
       \ call s:applyToRange(<line1>, <line2>, { x -> todotxt#toggleDo(x) })
 
-" Setting task priorities
+" Runs |todotxt#unpri| on the current line (or range).
+command -buffer -range TodotxtUnpri
+      \ call s:applyToRange(<line1>, <line2>, { x -> todotxt#unpri(x)    })
 
-command -buffer -range          TodotxtUnpri
-      \ call s:applyToRange(<line1>, <line2>, { x -> todotxt#unpri(x)              })
-command -buffer -range -nargs=1 TodotxtPri
-      \ call s:applyToRange(<line1>, <line2>, { x -> todotxt#pri(x, <q-args>)      })
-command -buffer -range -nargs=1 TodotxtMaybePri
-      \ call s:applyToRange(<line1>, <line2>, { x -> todotxt#maybePri(x, <q-args>) })
-
-" Variadically setting task priorities
-
+" Runs |todotxt#pri| on the current line (or range). The priority can be
+" specified as an argument or input.
 command -buffer -range -nargs=? TodotxtInputPri
       \ call s:applyToRange(<line1>, <line2>, { x ->
       \ todotxt#pri(<q-args> == '' ? input('Enter priority: ') : <q-args>, x) })
 
+" Runs |todotxt#maybePri| on the current line (or range). The priority can be
+" specified as an argument or input.
 command -buffer -range -nargs=? TodotxtInputMaybePri
       \ call s:applyToRange(<line1>, <line2>, { x ->
-      \ todotxt#pri(<q-args> == '' ? input('Enter priority or blank to remove: ') : <q-args>, x) })
+      \ todotxt#maybePri(<q-args> == '' ? input('Enter priority or blank to remove: ') : <q-args>, x) })
