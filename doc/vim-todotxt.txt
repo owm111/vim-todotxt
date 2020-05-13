@@ -1,6 +1,7 @@
-*vim-todotxt.txt*	For Vim version 8.2	Last change: 2020 May 12
+*vim-todotxt.txt*	For Vim version 8.2	Last change: 2020 May 13
 
-CONTENTS                                                      *vim-todotxt*   
+
+CONTENTS                                                      *vim-todotxt*
 
     Introduction              |vim-todotxt-introduction|
         Recommended setup     |vim-todotxt-recommended|
@@ -9,7 +10,7 @@ CONTENTS                                                      *vim-todotxt*
     Functions                 |vim-todotxt-functions|
 
 ==============================================================================
-INTRODUCTION                                     *vim-todotxt-introduction*   
+INTRODUCTION                                     *vim-todotxt-introduction*
 
 vim-todotxt is a plugin that provides syntax defintions, filetype
 declarations, and some basic functions and commands for working with todo.txt
@@ -19,10 +20,10 @@ Note that priorities are only defined as uppercase letters in parenthesis at
 the start of a line (i.e. `^[[A-Z]]`).
 
 ------------------------------------------------------------------------------
-RECOMMENDED SETUP                                 *vim-todotxt-recommended*   
+RECOMMENDED SETUP                                 *vim-todotxt-recommended*
 
-By default, no keys are mapped. To map the most "important" commands, add
-this somewhere in your Vim config: >
+By default, no keys are mapped. To map the most "important" commands, add this
+somewhere in your Vim config: >
     nnoremap <buffer> <localleader>x :TodotxtToggleDo<CR>
     vnoremap <buffer> <localleader>x :TodotxtToggleDo<CR>
     nnoremap <buffer> <localleader>p :TodotxtInputMaybePri<CR>
@@ -36,7 +37,7 @@ Note that you will want to only map these keys for the todotxt filetype. This
 can be achieved with the |ftplugin| folder or |autocommands|.
 
 ==============================================================================
-SYNTAX                                                 *vim-todotxt-syntax*   
+SYNTAX                                                 *vim-todotxt-syntax*
 
 The following highlight groups are defined for todo.txt files (filetype
 "todotxt"):
@@ -49,11 +50,12 @@ todotxtContext                Contexts (e.g. `@context`).
 todotxtDueDate                Due dates (e.g. `due:2020-05-07`).
                                                         *hl-todotxtProject*
 todotxtProject                Projects (e.g. `+project`).
+
                                                             *hl-todotxtPri*
 todotxtPri{letter}            Tasks of priority {letter}.
 
 ==============================================================================
-COMMANDS                                             *vim-todotxt-commands*   
+COMMANDS                                             *vim-todotxt-commands*
 
 The following commands are defined for todo.txt files:
 
@@ -81,14 +83,15 @@ TodotxtInputMaybePri [priority]
                               range). The priority can be specified as an
                               argument or during execution via input.
 
+
 ==============================================================================
-FUNCTIONS                                           *vim-todotxt-functions*   
+FUNCTIONS                                           *vim-todotxt-functions*
 
 The following functions are defined for todo.txt files:
 
                                                                *todotxt#do*
 todotxt#do( {line} )          Removes a priority from {line}, then prepends an
-                               x and the date (if a creation date is already
+                              x and the date (if a creation date is already
                               specified).
                                                               *todotxt#pri*
 todotxt#pri( {p}, {line} )    Calls |todotxt#unpri| and |todotxt#undo| on a
@@ -112,4 +115,6 @@ todotxt#toggleDo( {line} )    If a {line} begins with an 'x ', then
                               |todotxt#undo| is called, else |todotxt#do| is
                               called.
 
+
 vim:ft=help:tw=78:norl:ts=8:
+
